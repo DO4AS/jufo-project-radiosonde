@@ -25,7 +25,7 @@
 #define NRESET 7                                                               
 #define DIO0 4                                 
 #define DIO1 -1                               
-#define DIO2 A3     
+#define DIO2 -1     
 
 // use SX1278 radio module
 #define LORA_DEVICE DEVICE_SX1278 
