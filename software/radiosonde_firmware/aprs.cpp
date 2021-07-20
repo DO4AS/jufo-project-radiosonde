@@ -68,6 +68,17 @@ void aprs::begin(void)
 
     return String(comment_buffer);
   }
+
+#else
+  String aprs::create_comment(int altitude, int aprs_packet_number, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment)
+  {
+    char comment_buffer[80];
+
+    // altitude*3.28084 - for conversion from meter to feet
+    sprintf(comment_buffer, "/A=%06d/F%dN%dE%dY%dV%dC%dS%d %s" , int((altitude*3.28084)), payload_flight_number, aprs_packet_number, mcu_vin, solar_vin, gps_speed, gps_course, number_of_gps_satellites, additional_comment.c_str());
+
+    return String(comment_buffer);
+  }
 #endif
 
 void aprs::send(String latitude, String longitude, String comment, float frequency) 

@@ -44,6 +44,8 @@ class aprs
       String create_comment(int altitude, int aprs_packet_number, int temperature, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
     #elif defined used_bme680
       String create_comment(int altitude, int aprs_packet_number, int bme680_temperature, int bme680_humidity, long int bme680_pressure, int bme680_gas_resistance, int vin_voltage, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
+    #else
+       String create_comment(int altitude, int aprs_packet_number, int vin_voltage, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
     #endif
 
 		void send(String latitude, String longitude, String comment, float frequency);

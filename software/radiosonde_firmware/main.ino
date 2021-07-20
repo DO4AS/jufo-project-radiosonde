@@ -158,8 +158,8 @@ void send_aprs_packet()
     // create aprs comment with payload data
     String aprs_comment = aprs_module.create_comment(gps_altitude, aprs_packet_counter, bme680_temperature, bme680_humidity, bme680_pressure, bme680_gas_resistance, mcu_input_voltage, solar_input_voltage, gps_speed, gps_course, gps_satellites, additional_aprs_comment);
   #else
-    // create aprs comment no payload data
-    String aprs_comment = additional_aprs_comment;
+    // create aprs comment with payload data
+    String aprs_comment = aprs_module.create_comment(gps_altitude, aprs_packet_counter, mcu_input_voltage, solar_input_voltage, gps_speed, gps_course, gps_satellites, additional_aprs_comment); 
   #endif
   
   aprs_module.send(gps_latitude_DMH, gps_longitude_DMH, aprs_comment, freq);
@@ -167,5 +167,5 @@ void send_aprs_packet()
   // increase aprs packet counter by one
   aprs_packet_counter = aprs_packet_counter + 1;
   
-  gps_module.m_pgps_serial->begin(9600);   // needed for aprs to properly work
+  gps_module.m_pgps_serial->begin(gps_baud_rate);   // needed for aprs to properly work
 }
