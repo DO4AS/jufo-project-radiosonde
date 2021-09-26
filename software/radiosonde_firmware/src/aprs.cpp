@@ -91,10 +91,6 @@ void aprs::send(String latitude, String longitude, String comment, float frequen
   m_pSX1278->writeRegister(REG_FDEVLSB, sx1278_deviation);                  
   m_pSX1278->writeRegister(REG_PLLHOP, 0xAD); 
 
-  Serial.println(latitude);
-  
-  Serial.println(longitude);
-
   // send ax.25 flag, header, payload information (comment), fcs (crc) and flag
   send_flag(100);
   crc = 0xffff;
