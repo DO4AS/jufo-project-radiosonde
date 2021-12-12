@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+//master
 
 #include "config.h"
 
@@ -222,7 +223,7 @@ void loop()
       String aprs_comment = aprs_module.create_comment(gps_altitude, radio_packet_counter, mcu_input_voltage, solar_input_voltage, gps_speed, gps_course, gps_satellites, additional_aprs_comment); 
     #endif
     
-    aprs_module.send(gps_latitude_DMH, gps_longitude_DMH, aprs_comment, freq);
+    aprs_module.send_position_packet(gps_latitude_DMH, gps_longitude_DMH, aprs_comment, freq);
 
     // increase aprs packet counter by one
     radio_packet_counter = radio_packet_counter + 1;

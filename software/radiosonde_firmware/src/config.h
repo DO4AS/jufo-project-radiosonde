@@ -5,7 +5,7 @@
  * payload  config
  */
 
-  #define payload_flight_number 0
+  #define payload_flight_number 1
 
 /*
  * radio protocol  config
@@ -15,7 +15,7 @@
 
   // #define used_lora_ttn  // only aprs or lora_ttn! // ttn-network payload formatter is pending
 
-  #define radio_packet_delay 40  // radio packet delay in sec
+  #define radio_packet_delay 60  // radio packet delay in sec
 
 /*
  * lora config
@@ -59,6 +59,8 @@
   #define aprs_frequency_newzealand  144.575  // aprs frequency newzealand in MHz
   #define aprs_frequency_australia   145.175  // aprs frequency australia in MHz
 
+  #define aprs_afsk_baudrate_adjustment 0.975
+
   #define additional_aprs_comment "RHG"
 
 /*
@@ -66,7 +68,7 @@
  */
 
   #define sx1278_radio_pwm_pin 6
-  #define sx1278_frequency_correction 2100 // frequency offset in Hz
+  #define sx1278_frequency_correction 2700 // frequency offset in Hz
   #define sx1278_tx_power 17  // tx power in dbm (1-17 dbm)
   #define sx1278_deviation 0x32
   
@@ -76,7 +78,7 @@
 
   #define gps_baud_rate 9600 
 
-  #define gps_timeout 40  // gps timeout in sec
+  #define gps_timeout 60  // gps timeout in sec
 
 /*
  * environment sensor config

@@ -34,17 +34,6 @@ void aprs::begin(void)
   m_pSX1278->begin(NSS, NRESET, DIO0, DIO1, DIO2, LORA_DEVICE);
  
   pinMode(sx1278_radio_pwm_pin, OUTPUT);
-  
-  mycall = aprs_source_callsign;
-  myssid = aprs_source_ssid;
-
-  dest = aprs_destination_callsign;
-
-  digi = aprs_digipeater;
-  digissid = aprs_digipeater_ssid;
-
-  sym_ovl = aprs_symbol_overlay;
-  sym_tab = aprs_symbol;
 }
 
 #ifdef used_ds18b20
@@ -81,7 +70,7 @@ void aprs::begin(void)
   }
 #endif
 
-void aprs::send(String latitude, String longitude, String comment, float frequency) 
+void aprs::send_position_packet(String latitude, String longitude, String comment, float frequency) 
 {
 
   // setup sx1278 radio in "continuous" mode and enable tx
@@ -94,14 +83,32 @@ void aprs::send(String latitude, String longitude, String comment, float frequen
   // send ax.25 flag, header, payload information (comment), fcs (crc) and flag
   send_flag(100);
   crc = 0xffff;
-  send_header();
-  send_payload_information(comment, latitude, longitude);
+  send_header(aprs_source_callsign, aprs_source_ssid);
+
+  // send ! for uncompressed position packet
+	send_char_NRZI(_DT_POS, HIGH);
+
+  // send latitude
+	send_string_len(latitude.c_str(), latitude.length());
+
+  // send symbol table id
+	send_char_NRZI(aprs_symbol_overlay, HIGH);
+
+  // send longitude
+	send_string_len(longitude.c_str(), longitude.length());
+
+  // send symbol code
+	send_char_NRZI(aprs_symbol, HIGH);
+
+  // send further payload information (comment)
+	send_string_len(comment.c_str(), comment.length());
+
+  // send crc
   send_crc();
   send_flag(3);
 
   // reset sx1278 radio and disable tx
   m_pSX1278->resetDevice();
-
 }
 
 void aprs::set_nada_1200(void) 
@@ -154,14 +161,14 @@ void aprs::send_crc(void)
   send_char_NRZI(crc_hi, HIGH);
 }
 
-void aprs::send_header(void) 
+void aprs::send_header(String source_callsign, char source_ssid) 
 {
   char temp;
 
   // send destination adress
-  temp = dest.length();
+  temp = String(aprs_destination_callsign).length();
   for(int j=0; j<temp; j++)
-    send_char_NRZI(String(dest)[j] << 1, HIGH);
+    send_char_NRZI(String(aprs_destination_callsign)[j] << 1, HIGH);
   if(temp < 6) 
   {
     for(int j=0; j<(6 - temp); j++)
@@ -171,55 +178,33 @@ void aprs::send_header(void)
 
 
   // send source adress
-  temp = mycall.length();
+  temp = source_callsign.length();
   for(int j=0; j<temp; j++)
-    send_char_NRZI(String(mycall)[j] << 1, HIGH);
+    send_char_NRZI(String(source_callsign)[j] << 1, HIGH);
   if(temp < 6) 
   {
     for(int j=0; j<(6 - temp); j++)
       send_char_NRZI(' ' << 1, HIGH);
   }
  
-  send_char_NRZI((myssid + '0') << 1, HIGH);
+  send_char_NRZI((source_ssid + '0') << 1, HIGH);
 
 
   // send digipeater adresses
-  temp = digi.length();
+  temp = String(aprs_digipeater).length();
   for(int j=0; j<temp; j++)
-    send_char_NRZI(String(digi)[j] << 1, HIGH);
+    send_char_NRZI(String(aprs_digipeater)[j] << 1, HIGH);
   if(temp < 6) 
   {
     for(int j=0; j<(6 - temp); j++)
       send_char_NRZI(' ' << 1, HIGH);
   }
-  send_char_NRZI(((digissid + '0') << 1) + 1, HIGH);
+  send_char_NRZI(((aprs_digipeater_ssid + '0') << 1) + 1, HIGH);
 
   // send control field and protocol field
   send_char_NRZI(_CTRL_ID, HIGH);
   send_char_NRZI(_PID, HIGH);
 }
-
-void aprs::send_payload_information(String comment, String latitude, String longitude) 
-{
-  // send ! for uncompressed position packet
-	send_char_NRZI(_DT_POS, HIGH);
-
-  // send latitude
-	send_string_len(latitude.c_str(), latitude.length());
-
-  // send symbol table id
-	send_char_NRZI(sym_ovl, HIGH);
-
-  // send longitude
-	send_string_len(longitude.c_str(), longitude.length());
-
-  // send symbol code
-	send_char_NRZI(sym_tab, HIGH);
-
-  // send further payload information (comment)
-	send_string_len(comment.c_str(), comment.length());
-}
-
 
 void aprs::send_char_NRZI(unsigned char in_byte, bool enBitStuff) 
 {
