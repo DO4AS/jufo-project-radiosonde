@@ -4,22 +4,25 @@
 
 ---
 
-
 #### APRS packet description:
 
 ![aprs paket description](aprs_paket_description.png)
  **Figure 1** - APRS packet description
 
-#### second  radiosonde version:
+#### third radiosonde version:
 
-| front view                                                   | back view                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![radiosonde-2_front](hardware/radiosonde-2/radiosonde-2_front.png) | ![radiosonde-2_back](hardware/radiosonde-2/radiosonde-2_back.png) |
+| front view                                                                    | back view                                                                   |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ![radiosonde-2-lite_front](radiosonde-3-lite_front.png) | ![radiosonde-2-lite_back](radiosonde-3-lite_back.png) |
 
- **Figure 2** - radiosonde-2 pcb
+<img src="radiosonde-3-lite_front_2.png" alt="radiosonde-3-lite_front_2" width=50% />
 
-| front view                                                   | back view                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+**Figure 2** - radiosonde-3 pcb
+
+#### second radiosonde version:
+
+| front view                                                                    | back view                                                                   |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | ![radiosonde-2-lite_front](hardware/radiosonde-2/radiosonde-2-lite_front.png) | ![radiosonde-2-lite_back](hardware/radiosonde-2/radiosonde-2-lite_back.png) |
 
  **Figure 3** - radiosonde-2-lite pcb
@@ -46,42 +49,42 @@
 
 #### first radiosonde version:
 
-| front view                                                   | back view                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| front view                                                          | back view                                                         |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | ![radiosonde-1_front](hardware/radiosonde-1/radiosonde-1_front.png) | ![radiosonde-1_back](hardware/radiosonde-1/radiosonde-1_back.png) |
 
  **Figure 9** - radiosonde-1 pcb
 
-![radiosonde-1_without_solar_array](radiosonde-1_without_solar_array.JPG)**Figure 2** - radiosonde-1 without mounted solar panels
+![radiosonde-1_without_solar_array](radiosonde-1_without_solar_array.JPG)**Figure 10** - radiosonde-1 without mounted solar panels
 
 ![radiosonde-1_with_solar_array](radiosonde-1_with_solar_array.JPG)
 
-**Figure 10** - radiosonde-1 with mounted solar panels
+**Figure 11** - radiosonde-1 with mounted solar panels
 
 ![radiosonde-1_in_the_air](radiosonde-1_in_the_air.jpg)
 
-**Figure 11** - radiosonde-1 in the air
+**Figure 12** - radiosonde-1 in the air
 
 ![radiosonde-1_in_the_air_2](radiosonde-1_in_the_air_2.JPG)
 
-**Figure 12** - radiosonde-1 in the air 2
+**Figure 13** - radiosonde-1 in the air 2
 
 #### <a name="ascent_phase_measurement_data"></a>ascent phase measurement data
 
 ![ascent profile altitude](ascent_profile_altitude.svg)
 
-**Figure 13** - radiosonde ascent profile
+**Figure 14** - radiosonde ascent profile
 
 ![ascent profile temperature](ascent_profile_temperature.svg)
 
-**Figure 14** - radiosonde ascent profile 2
+**Figure 15** - radiosonde ascent profile 2
 
 #### <a name="floating_phase_measurement_data"></a>floating phase measurement data
 
 ![floating profile altitude](floating_profile_altitude.svg)
 
-**Figure 15** - radiosonde floating profile
+**Figure 16** - radiosonde floating profile
 
 ![floating profile temperature](floating_profile_temperature.svg)
 
-**Figure 16** - radiosonde floating profile 2
+**Figure 17** - radiosonde floating profile 2
