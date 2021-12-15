@@ -13,6 +13,9 @@
 #define _CTRL_ID    0x03
 #define _PID        0xf0
 #define _DT_POS     '!'
+#define _DT_UDDF	'{'
+#define _DT_UDDF_UI	'{'
+
 
 // SX1278 hardware pin definitions 
 #define NSS 5                                 
@@ -35,22 +38,27 @@ class aprs
 
     void begin(void);
 
-    #ifdef used_ds18b20
+    #if environmental_sensor == 1 or environmental_sensor == 2
       String create_comment(long altitude, int aprs_packet_number, int temperature, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
-    #elif defined used_bme680
+    #elif environmental_sensor == 3
       String create_comment(long altitude, int aprs_packet_number, int bme680_temperature, int bme680_humidity, long int bme680_pressure, int bme680_gas_resistance, int vin_voltage, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
     #else
        String create_comment(long altitude, int aprs_packet_number, int vin_voltage, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment);
     #endif
 
-		void send_position_packet(String latitude, String longitude, String comment, float frequency);
+	void send_position_packet(String latitude, String longitude, String comment, float frequency);
+
+	#ifdef enable_position_caching
+		void send_custom_packet(char* custom_payload_info, float frequency);
+	#endif
+
 
 	private:
 
 		bool nada = _2400;
 
-		unsigned int tc1200 = (unsigned int)(0.5 * aprs_afsk_baudrate_adjustment * 1000000.0 / 1200.0);
-		unsigned int tc2400 = (unsigned int)(0.5 * aprs_afsk_baudrate_adjustment * 1000000.0 / 2400.0);
+		unsigned int tc1200 = (unsigned int)(0.5 * aprs_afsk_tone_adjustment * 1000000.0 / 1200.0);
+		unsigned int tc2400 = (unsigned int)(0.5 * aprs_afsk_tone_adjustment * 1000000.0 / 2400.0);
 
 		unsigned int tx_delay = 5000;
 		unsigned int str_len = 400;

@@ -18,26 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BME680_H_
-#define BME680_H_
+#ifndef NTC_TEMPERATURE_SENSOR_H_
+#define NTC_TEMPERATURE_SENSOR_H_
 
-#include "Zanshin_BME680.h"
-
-
-class bme680
+class ntc_temperature_sensor
 {
   public:
 
-    bme680();
-    ~bme680();
+    ntc_temperature_sensor();
+    ~ntc_temperature_sensor();
 
-    void begin(void);
-    void get_environmental_readings(long int* temperature, long int* humidity, long int* pressure, long int* gas_resistance);
-    
-  private:
-  
-    BME680_Class* m_pbme_680;
-     
+    int get_ntc_temperature(void);
 };
 
-#endif /* BME680_H_ */
+#endif /* NTC_TEMPERATURE_SENSOR_H_ */

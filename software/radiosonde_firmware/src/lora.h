@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef LORA_H_
@@ -39,7 +39,7 @@ class lora
 
     void begin(void);
 
-    #ifdef used_ds18b20
+    #if environmental_sensor == 1 or environmental_sensor == 2
       String create_payload_data(char *flight_number, char *gps_latitude, char *gps_longitude, char *gps_altitude, char *gps_speed_course, char *aprs_packet_number, char *temperature, char *input_voltages, char *number_of_gps_satellites);
     #else
       String create_payload_data(char *flight_number, char *gps_latitude, char *gps_longitude, char *gps_altitude, char *gps_speed_course, char *aprs_packet_number, char *input_voltages, char *number_of_gps_satellites);

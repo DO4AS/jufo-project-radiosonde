@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <Arduino.h>
@@ -34,6 +34,40 @@ geofence::~geofence()
 
 }
 
+#ifdef enable_position_caching
+    const PROGMEM float europe_valid_vertices_lat[] = {
+        53.733,
+        37.128,
+        47.638,
+        54.633,
+        52.667
+    };
+
+    const PROGMEM float europe_valid_vertices_long[] = {
+        -2.689,
+        -5.229,
+        18.369,
+        18.296,
+        2.530
+    };
+
+    const PROGMEM float usa_valid_vertices_lat[] = {
+        48.818,
+        44.852,
+        30.236,
+        31.593,
+        39.856
+    };
+
+    const PROGMEM float usa_valid_vertices_long[] = {
+        -124.039,
+        -67.701,
+        -81.060,
+        -116.744,
+        -124.215
+    };
+#endif
+
 const float region1_vertices_lat[] = {
     28.299,
     44.586,
@@ -50,7 +84,7 @@ const float region1_vertices_long[] = {
     -178.067
 };
 
-const float region2_vertices_lat[] = {
+const PROGMEM float region2_vertices_lat[] = {
     7.327,
     -10.868,
     -20.666,
@@ -65,7 +99,7 @@ const float region2_vertices_lat[] = {
     34.568
 };
 
-const float region2_vertices_long[] = {  
+const PROGMEM float region2_vertices_long[] = {  
     -79.109,
     -65.398,
     -71.023,
@@ -80,7 +114,7 @@ const float region2_vertices_long[] = {
     -45.359
 };
 
-const float brazil_vertices_lat[] = {
+const PROGMEM float brazil_vertices_lat[] = {
     -35.668,
     -33.497,
     -21.526,
@@ -90,7 +124,7 @@ const float brazil_vertices_lat[] = {
     -1.485
 };
 
-const float brazil_vertices_long[] = {  
+const PROGMEM float brazil_vertices_long[] = {  
     -44.701,
     -63.685,
     -79.154,
@@ -100,7 +134,7 @@ const float brazil_vertices_long[] = {
     -28.705
 };
 
-const float china_vertices_lat[] = {
+const PROGMEM float china_vertices_lat[] = {
     17.302,
     17.47,
     23.073,
@@ -114,7 +148,7 @@ const float china_vertices_lat[] = {
     24.681
 };
 
-const float china_vertices_long[] = {  
+const PROGMEM float china_vertices_long[] = {  
     110.932,
     97.924,
     81.577,
@@ -128,7 +162,7 @@ const float china_vertices_long[] = {
     123.061
 };
 
-const float japan_vertices_lat[] = {
+const PROGMEM float japan_vertices_lat[] = {
     41.741,
     38.859,
     36.635,
@@ -142,7 +176,7 @@ const float japan_vertices_lat[] = {
     54.497
 };
 
-const float japan_vertices_long[] = {  
+const PROGMEM float japan_vertices_long[] = {  
     137.825,
     136.77,
     133.958,
@@ -156,7 +190,7 @@ const float japan_vertices_long[] = {
     142.132
 };
 
-const float thailand_vertices_lat[] = {
+const PROGMEM float thailand_vertices_lat[] = {
     7.724,
     6.678,
     7.812,
@@ -168,7 +202,7 @@ const float thailand_vertices_lat[] = {
     24.139
 };
 
-const float thailand_vertices_long[] = {  
+const PROGMEM float thailand_vertices_long[] = {  
     97.432,
     105.079,
     113.604,
@@ -180,7 +214,7 @@ const float thailand_vertices_long[] = {
     88.907
 };
 
-const float newzealand_vertices_lat[] = {
+const PROGMEM float newzealand_vertices_lat[] = {
     -51.63,
     -48.936,
     -44.605,
@@ -190,7 +224,7 @@ const float newzealand_vertices_lat[] = {
     -47.293
 };
 
-const float newzealand_vertices_long[] = {  
+const PROGMEM float newzealand_vertices_long[] = {  
     166.988,
     173.668,
     178.59,
@@ -200,7 +234,7 @@ const float newzealand_vertices_long[] = {
     155.914
 };
 
-const float australia_vertices_lat[] = {
+const PROGMEM float australia_vertices_lat[] = {
     -7.646,
     -15.136,
     -33.523,
@@ -213,7 +247,7 @@ const float australia_vertices_lat[] = {
     -2.833
 };
 
-const float australia_vertices_long[] = {  
+const PROGMEM float australia_vertices_long[] = {  
     124.411,
     109.909,
     110.084,
@@ -228,24 +262,42 @@ const float australia_vertices_long[] = {
 
 // check if point is in geographic region - latitude and longitude in deg
 // function based on example from W. Randolph Franklin - https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
-bool geofence::check_if_point_is_in_geographic_region (int number_of_vertices, const float *vertices_latitude_degrees_list, const float *vertices_longitude_degrees_list, float test_point_latitude, float test_point_longitude)
+bool geofence::check_if_point_is_in_geographic_region (int number_of_vertices, const float *vertices_latitude_degrees_list, const float *vertices_longitude_list, float test_point_latitude, float test_point_longitude)
 {
   bool c = 0;
   int i, j = 0;
   for (i = 0, j = number_of_vertices-1; i < number_of_vertices; j = i++) {
-    if ( ((vertices_longitude_degrees_list[i]>test_point_longitude) != (vertices_longitude_degrees_list[j]>test_point_longitude)) &&
-	 (test_point_latitude < (vertices_latitude_degrees_list[j]-vertices_latitude_degrees_list[i]) * (test_point_longitude-vertices_longitude_degrees_list[i]) / (vertices_longitude_degrees_list[j]-vertices_longitude_degrees_list[i]) + vertices_latitude_degrees_list[i]) )
+    if ( ((pgm_read_float(vertices_longitude_list + i)>test_point_longitude) != (pgm_read_float(vertices_longitude_list + j)>test_point_longitude)) &&
+	 (test_point_latitude < (pgm_read_float(vertices_latitude_degrees_list + j)-pgm_read_float(vertices_latitude_degrees_list + i)) * (test_point_longitude-pgm_read_float(vertices_longitude_list + i)) / (pgm_read_float(vertices_longitude_list + j)-pgm_read_float(vertices_longitude_list + i)) + pgm_read_float(vertices_latitude_degrees_list + i)) )
        c = !c;
   }
   return c;
 }
 
 // get aprs frequency depending on the region - latitude and longitude in deg
-float geofence::get_aprs_frequency(float gps_latitude, float gps_longitude)
+float geofence::get_aprs_frequency(float gps_latitude, float gps_longitude, bool* area_valid_for_cached_position_transmission)
 {
+    *area_valid_for_cached_position_transmission = false;
+
     // invalid gnss position
     if(gps_latitude == 0 && gps_longitude == 0) return aprs_frequency_default;
     
+    #ifdef enable_position_caching
+        // valid europe
+        if (check_if_point_is_in_geographic_region (sizeof(europe_valid_vertices_lat)/sizeof(europe_valid_vertices_lat[0]), europe_valid_vertices_lat, europe_valid_vertices_long, gps_latitude, gps_longitude))
+        {
+            *area_valid_for_cached_position_transmission = true;
+            return aprs_frequency_region1;
+        }
+
+        // valid usa
+        if (check_if_point_is_in_geographic_region (sizeof(usa_valid_vertices_lat)/sizeof(usa_valid_vertices_lat[0]), usa_valid_vertices_lat, usa_valid_vertices_long, gps_latitude, gps_longitude))
+        {
+            *area_valid_for_cached_position_transmission = true;
+            return aprs_frequency_region2;
+        }
+    #endif
+
     // australia
     if (check_if_point_is_in_geographic_region (sizeof(australia_vertices_lat)/sizeof(australia_vertices_lat[0]), australia_vertices_lat, australia_vertices_long, gps_latitude, gps_longitude)) return aprs_frequency_australia;
     
@@ -269,7 +321,7 @@ float geofence::get_aprs_frequency(float gps_latitude, float gps_longitude)
     
     // region1
     if (check_if_point_is_in_geographic_region (sizeof(region1_vertices_lat)/sizeof(region1_vertices_lat[0]), region1_vertices_lat, region1_vertices_long, gps_latitude, gps_longitude)) return aprs_frequency_region1;
-    
+
     // if no position found: transmit on default frequency
     return aprs_frequency_default;
 }

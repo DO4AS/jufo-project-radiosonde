@@ -18,26 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BME680_H_
-#define BME680_H_
+#include <Arduino.h>
 
-#include "Zanshin_BME680.h"
+#include "ntc.h"
+#include "config.h"
 
-
-class bme680
+ntc_temperature_sensor::ntc_temperature_sensor()
 {
-  public:
 
-    bme680();
-    ~bme680();
+}
 
-    void begin(void);
-    void get_environmental_readings(long int* temperature, long int* humidity, long int* pressure, long int* gas_resistance);
-    
-  private:
-  
-    BME680_Class* m_pbme_680;
-     
-};
+ntc_temperature_sensor::~ntc_temperature_sensor() 
+{  
 
-#endif /* BME680_H_ */
+}
+
+// returns temperature from NTC sensor
+int ntc_temperature_sensor::get_ntc_temperature(void)
+{
+
+  // take n number of analog reads and average them
+  float average_analog_reading = 0;
+
+  for(int c = 0; c < ntc_number_of_analog_readings_for_averaging; c++)
+  {
+    average_analog_reading = average_analog_reading + analogRead(ntc_analog_pin);
+    delay(5);
+  }
+
+  average_analog_reading = average_analog_reading / ntc_number_of_analog_readings_for_averaging;
+
+  // compute temperature using Steinhart–Hart equation
+  return(round(1 / (log(1 / (1023 / average_analog_reading - 1)) / ntc_beta_coefficient + 1 / (ntc_nominal_temperature + 273.15)) - 273.15));
+}

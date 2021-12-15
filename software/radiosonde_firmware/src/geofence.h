@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GEOFENCE_H__
@@ -28,7 +28,7 @@ class geofence
     geofence();
     ~geofence();
  
-    float get_aprs_frequency(float gps_latitude, float gps_longitude);
+    float get_aprs_frequency(float gps_latitude, float gps_longitude, bool* area_valid_for_cached_position_transmission);
 
   private:
 

@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <Arduino.h>
@@ -44,7 +44,7 @@ void voltage_measurement::get_voltage_measurements(int* p_mcu_voltage, int* p_so
 
   long raw_voltage = (ADCH<<8) | ADCL;
 
-  raw_voltage = (1125300L / raw_voltage) * float(input_voltage_measurment_correction_factor);
+  raw_voltage = (1125300L / raw_voltage) * float(input_voltage_measurement_correction_factor);
   *p_mcu_voltage = int (raw_voltage / 10);
 
   // measure and calculate solar input voltage

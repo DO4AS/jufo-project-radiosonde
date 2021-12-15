@@ -36,10 +36,10 @@ void aprs::begin(void)
   pinMode(sx1278_radio_pwm_pin, OUTPUT);
 }
 
-#ifdef used_ds18b20
+#if environmental_sensor == 1 or environmental_sensor == 2
   String aprs::create_comment(long altitude, int aprs_packet_number, int temperature, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment)
   {
-    char comment_buffer[80];
+    char comment_buffer[55];
 
     // altitude*3.28084 - for conversion from meter to feet
     sprintf(comment_buffer, "/A=%06ld/F%dN%dT%dE%dY%dV%dC%dS%d %s" , long((altitude*3.28084)), payload_flight_number, aprs_packet_number, temperature, mcu_vin, solar_vin, gps_speed, gps_course, number_of_gps_satellites, additional_comment.c_str());
@@ -47,7 +47,7 @@ void aprs::begin(void)
     return String(comment_buffer);
   }
 
-#elif defined used_bme680
+#elif environmental_sensor == 3
   String aprs::create_comment(long altitude, int aprs_packet_number, int bme680_temperature, int bme680_humidity, long int bme680_pressure, int bme680_gas_resistance, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment)
   {
     char comment_buffer[80];
@@ -61,7 +61,7 @@ void aprs::begin(void)
 #else
   String aprs::create_comment(long altitude, int aprs_packet_number, int mcu_vin, int solar_vin, int gps_speed, int gps_course, int number_of_gps_satellites, String additional_comment)
   {
-    char comment_buffer[80];
+    char comment_buffer[55];
 
     // altitude*3.28084 - for conversion from meter to feet
     sprintf(comment_buffer, "/A=%06ld/F%dN%dE%dY%dV%dC%dS%d %s" , long((altitude*3.28084)), payload_flight_number, aprs_packet_number, mcu_vin, solar_vin, gps_speed, gps_course, number_of_gps_satellites, additional_comment.c_str());
@@ -72,7 +72,6 @@ void aprs::begin(void)
 
 void aprs::send_position_packet(String latitude, String longitude, String comment, float frequency) 
 {
-
   // setup sx1278 radio in "continuous" mode and enable tx
   m_pSX1278->setupDirect(frequency * 1000000, sx1278_frequency_correction);
   m_pSX1278->setTXDirect();
@@ -110,6 +109,37 @@ void aprs::send_position_packet(String latitude, String longitude, String commen
   // reset sx1278 radio and disable tx
   m_pSX1278->resetDevice();
 }
+
+#ifdef enable_position_caching
+  void aprs::send_custom_packet(char* custom_payload_info, float frequency) 
+  {
+    // setup sx1278 radio in "continuous" mode and enable tx
+    m_pSX1278->setupDirect(frequency * 1000000, sx1278_frequency_correction);
+    m_pSX1278->setTXDirect();
+    m_pSX1278->setTxParams(sx1278_tx_power, RADIO_RAMP_DEFAULT);             
+    m_pSX1278->writeRegister(REG_FDEVLSB, sx1278_deviation);                  
+    m_pSX1278->writeRegister(REG_PLLHOP, 0xAD); 
+
+    // send ax.25 flag, header, payload information , fcs (crc) and flag
+    send_flag(100);
+    crc = 0xffff;
+    send_header(caching_aprs_source_callsign, caching_aprs_source_ssid);
+
+    // send { for user-defined data format
+    send_char_NRZI(_DT_UDDF, HIGH);
+    // send { for user-defined data format - user id / type
+    send_char_NRZI(_DT_UDDF_UI, HIGH);
+    send_char_NRZI(_DT_UDDF_UI, HIGH);
+
+    // send further payload information (comment)
+    send_string_len(custom_payload_info, strlen(custom_payload_info));
+    send_crc();
+    send_flag(3);
+
+    // reset sx1278 radio and disable tx
+    m_pSX1278->resetDevice();
+  }
+#endif
 
 void aprs::set_nada_1200(void) 
 {

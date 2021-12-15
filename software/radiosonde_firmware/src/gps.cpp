@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <Arduino.h>
@@ -62,7 +62,7 @@ gps::~gps()
  * more information at: http://www.aprs.org/doc/APRS101.PDF
  */
 
-#ifdef used_aprs
+#if radio_protocol == 1
   void gps::convert_gps_coordinates_to_DMH(float gps_latitude, float gps_longitude, String* gps_latitude_DMH, String* gps_longitude_DMH)
   {
     int degrees_buffer;
@@ -128,7 +128,7 @@ gps::~gps()
     *gps_longitude_DMH = String(longitude_coordinates_buffer);
   }
 
-#elif defined used_lora_ttn
+#elif radio_protocol == 2
 
   /*
   * base-91 encoding
