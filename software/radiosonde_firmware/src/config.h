@@ -62,6 +62,9 @@
   * beta: position chaching config (APRS only)
   */
 
+  // warning: erase EEPROM before using position caching
+  // see: software\additional_tools\erase_eeprom.ino
+
   // #define enable_position_caching
 
   #define caching_aprs_source_callsign "DO4AS"
