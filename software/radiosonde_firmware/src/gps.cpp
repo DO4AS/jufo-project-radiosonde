@@ -72,7 +72,7 @@ gps::~gps()
     char latitude_compass_direction;
     
     // determine whether to append "N" or "S"
-    if ((int) gps_latitude > 0) 
+    if (gps_latitude > 0) 
     {
       latitude_compass_direction = 'N'; 
     }
@@ -101,7 +101,7 @@ gps::~gps()
     char longitude_compass_direction;
   
     // determine whether to append "E" or "W"
-    if ((int) gps_longitude > 0) 
+    if (gps_longitude > 0) 
     {
       longitude_compass_direction = 'E'; 
     }
