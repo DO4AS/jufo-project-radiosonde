@@ -1,8 +1,14 @@
 # "Jugend Forscht" / "ISEF": radiosonde project
 
-**see https://do4as.github.io/ for more balloon flight information and some balloon calculator utilities**
+**This project won the national prize at "Jugend Forscht", Germany's largest youth science competition. [In 80 Tagen um die Welt – kleine Sonden auf großer Mission](https://www.jugend-forscht.de/projektdatenbank/in-80-tagen-um-die-welt-kleine-sonden-auf-grosser-mission.html)**
+
+
+
+**see https://do4as.github.io/ for more balloon flight information**
 
 ---
+
+![radiosonde-3-lite_with_solar_array.png](balloon_flight-map-11.png)
 
 ### third radiosonde version:
 
@@ -70,25 +76,30 @@
 
 ### APRS packet description:
 
-![aprs paket description](aprs_paket_description.png)
+![aprs paket description](aprs_paket_description.png#gh-light-mode-only)
+![aprs paket description](aprs_paket_description_dark.png#gh-dark-mode-only)
  **Figure** - APRS packet description
 
 ### <a name="ascent_phase_measurement_data"></a>ascent phase measurement data
 
-![ascent profile altitude](ascent_profile_altitude.svg)
+![ascent profile altitude](ascent_profile_altitude.svg#gh-light-mode-only)
+![ascent profile altitude](ascent_profile_altitude_dark.png#gh-dark-mode-only)
 
 **Figure** - radiosonde ascent profile
 
-![ascent profile temperature](ascent_profile_temperature.svg)
+![ascent profile temperature](ascent_profile_temperature.svg#gh-light-mode-only)
+![ascent profile temperature](ascent_profile_temperature_dark.png#gh-dark-mode-only)
 
 **Figure** - radiosonde ascent profile 2
 
 ### <a name="floating_phase_measurement_data"></a>floating phase measurement data
 
-![floating profile altitude](floating_profile_altitude.svg)
+![floating profile altitude](floating_profile_altitude.svg#gh-light-mode-only)
+![floating profile altitude](floating_profile_altitude_dark.png#gh-dark-mode-only)
 
 **Figure** - radiosonde floating profile
 
-![floating profile temperature](floating_profile_temperature.svg)
+![floating profile temperature](floating_profile_temperature.svg#gh-light-mode-only)
+![floating profile temperature](floating_profile_temperature_dark.png#gh-dark-mode-only)
 
 **Figure** - radiosonde floating profile 2
