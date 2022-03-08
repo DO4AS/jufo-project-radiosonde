@@ -2,8 +2,6 @@
 
 **This project won the national prize at "Jugend Forscht", Germany's largest youth science competition. [In 80 Tagen um die Welt – kleine Sonden auf großer Mission](https://www.jugend-forscht.de/projektdatenbank/in-80-tagen-um-die-welt-kleine-sonden-auf-grosser-mission.html)**
 
-
-
 **see https://do4as.github.io/ for more balloon flight information**
 
 ---
@@ -23,6 +21,12 @@
 ![radiosonde-3-lite_with_solar_array.png](radiosonde-3-lite_with_solar_array.png)
 
 **Figure** - radiosonde-3 with mounted solar panels - radiosonde-3 weighs only 4.8 g
+
+### second radiosonde version with camera:
+
+| aerial image                                                                                  | radiosonde with camera                                                                               |
+|:---------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|
+| <img src="aerial_image_radiosonde_2.png" title="" alt="aerial_image_radiosonde_2" width=100%> | <img src="radiosonde-2-lite_with_camera.png" title="" alt="radiosonde-2-lite_with_camera" width=30%> |
 
 ### second radiosonde version:
 
